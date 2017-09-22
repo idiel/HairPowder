@@ -11,29 +11,61 @@ import UIKit
 open class HairPowder {
     static let instance = HairPowder()
     
-    var hairStyle: HairStyle = .default
+    var hairStyle: HairStyle = .roundedCut(.none)
+    
+    public enum HairDecoration {
+        case none
+        case devil
+        case cat
+        
+        func draw(onPath: UIBezierPath, width: CGFloat, height: CGFloat) {
+            switch self {
+            case .cat:
+            
+            let catEarPath = UIBezierPath()
+            catEarPath.move(to: CGPoint(x: width * 0.2, y:0))
+            catEarPath.addLine(to: CGPoint(x: width * 0.2 - 20, y: height))
+            catEarPath.addLine(to: CGPoint(x: width * 0.2 + 20, y: height))
+            catEarPath.addLine(to: CGPoint(x: width * 0.2, y:0))
+            
+            catEarPath.move(to: CGPoint(x: width * 0.8, y:0))
+            catEarPath.addLine(to: CGPoint(x: width * 0.8 - 20, y: height))
+            catEarPath.addLine(to: CGPoint(x: width * 0.8 + 20, y: height))
+            catEarPath.addLine(to: CGPoint(x: width * 0.8, y:0))
+            catEarPath.close()
+            onPath.append(catEarPath)
+            default:
+                break
+            }
+        }
+    }
     
     public enum HairStyle {
-        case `default`
-        case boxCut
+        case roundedCut(HairDecoration)
+        case boxCut(HairDecoration)
         
         func styledHairView(frame: CGRect) -> UIView {
             switch self {
-            case .default:
+            case .roundedCut(let decoration):
                 let powderView = HairPowderView(frame: frame)
                 powderView.backgroundColor = UIColor.clear
                 powderView.clipsToBounds = true
+                powderView.decoration = decoration
                 return powderView
-            case .boxCut:
+            case .boxCut(let decoration):
                 let powderView = BoxCutView(frame: frame)
                 powderView.backgroundColor = UIColor.clear
                 powderView.clipsToBounds = true
+                powderView.decoration = decoration
                 return powderView
+            }
         }
     }
     
     private class BoxCutView: UIView {
         static let cornerY: CGFloat = 35
+        var decoration: HairDecoration = .none
+        
         override func draw(_ rect: CGRect)
         {
             let width = frame.width > frame.height ? frame.height : frame.width
@@ -44,6 +76,9 @@ open class HairPowder {
             rectPath.addLine(to: CGPoint(x: width, y: BoxCutView.cornerY))
             rectPath.addLine(to: CGPoint(x: 0, y: BoxCutView.cornerY))
             rectPath.close()
+            
+            decoration.draw(onPath: rectPath, width: width, height: BoxCutView.cornerY)
+            rectPath.usesEvenOddFillRule = true
             rectPath.fill()
         }
     }
@@ -51,6 +86,8 @@ open class HairPowder {
     private class HairPowderView: UIView {
         static let cornerRadius: CGFloat = 40
         static let cornerY: CGFloat = 35
+        var decoration: HairDecoration = .none
+        
         override func draw(_ rect: CGRect)
         {
             let width = frame.width > frame.height ? frame.height : frame.width
@@ -61,6 +98,8 @@ open class HairPowder {
             rectPath.addLine(to: CGPoint(x: width, y: HairPowderView.cornerY))
             rectPath.addLine(to: CGPoint(x: 0, y: HairPowderView.cornerY))
             rectPath.close()
+            decoration.draw(onPath: rectPath, width: width, height: HairPowderView.cornerY)
+            rectPath.usesEvenOddFillRule = true
             rectPath.fill()
             
             let leftCornerPath = UIBezierPath()
@@ -78,6 +117,7 @@ open class HairPowder {
             rightCornerPath.addQuadCurve(to:  CGPoint(x: width, y: 35+HairPowderView.cornerRadius), controlPoint: CGPoint(x: width, y: HairPowderView.cornerY))
             rightCornerPath.close()
             rightCornerPath.fill()
+            
         }
     }
     
