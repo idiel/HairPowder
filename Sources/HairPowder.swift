@@ -21,19 +21,32 @@ open class HairPowder {
         func draw(onPath: UIBezierPath, width: CGFloat, height: CGFloat) {
             switch self {
             case .cat:
-            
-            let catEarPath = UIBezierPath()
-            catEarPath.move(to: CGPoint(x: width * 0.2, y:0))
-            catEarPath.addLine(to: CGPoint(x: width * 0.2 - 20, y: height))
-            catEarPath.addLine(to: CGPoint(x: width * 0.2 + 20, y: height))
-            catEarPath.addLine(to: CGPoint(x: width * 0.2, y:0))
-            
-            catEarPath.move(to: CGPoint(x: width * 0.8, y:0))
-            catEarPath.addLine(to: CGPoint(x: width * 0.8 - 20, y: height))
-            catEarPath.addLine(to: CGPoint(x: width * 0.8 + 20, y: height))
-            catEarPath.addLine(to: CGPoint(x: width * 0.8, y:0))
-            catEarPath.close()
-            onPath.append(catEarPath)
+                let catEarPath = UIBezierPath()
+                catEarPath.move(to: CGPoint(x: width * 0.2, y:0))
+                catEarPath.addLine(to: CGPoint(x: width * 0.2 - 18, y: height))
+                catEarPath.addLine(to: CGPoint(x: width * 0.2 + 18, y: height))
+                catEarPath.addLine(to: CGPoint(x: width * 0.2, y:0))
+                
+                catEarPath.move(to: CGPoint(x: width * 0.8, y:0))
+                catEarPath.addLine(to: CGPoint(x: width * 0.8 - 18, y: height))
+                catEarPath.addLine(to: CGPoint(x: width * 0.8 + 18, y: height))
+                catEarPath.addLine(to: CGPoint(x: width * 0.8, y:0))
+                catEarPath.close()
+                onPath.append(catEarPath)
+            case .devil:
+                let hornWidth: CGFloat = 15.0
+                let devilHornPath = UIBezierPath()
+                devilHornPath.move(to: CGPoint(x: width * 0.22, y:0))
+                devilHornPath.addQuadCurve(to: CGPoint(x: width * 0.22, y: height), controlPoint: CGPoint(x: width * 0.22 - hornWidth, y: height/2.0))
+                devilHornPath.addLine(to: CGPoint(x: width * 0.22 + 50, y: height))
+                devilHornPath.addQuadCurve(to: CGPoint(x: width * 0.22, y:0), controlPoint: CGPoint(x: width * 0.22, y: height/3.0))
+                
+                devilHornPath.move(to: CGPoint(x: width * 0.78, y:0))
+                devilHornPath.addQuadCurve(to: CGPoint(x: width * 0.78 - 50, y: height), controlPoint: CGPoint(x: width * 0.78, y: height/3.0))
+                devilHornPath.addLine(to: CGPoint(x: width * 0.78, y: height))
+                devilHornPath.addQuadCurve(to: CGPoint(x: width * 0.78, y: 0), controlPoint: CGPoint(x: width * 0.78 + hornWidth, y: height/2.0))
+                devilHornPath.close()
+                onPath.append(devilHornPath)
             default:
                 break
             }
